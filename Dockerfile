@@ -3,6 +3,7 @@ FROM node:20-slim
 
 # Cài đặt các công cụ cần thiết: git và unzip
 RUN apt-get update && apt-get install -y \
+    wget \
     git \
     unzip \
     curl \
@@ -19,4 +20,4 @@ RUN chmod +x run.sh
 
 # Chạy file run.sh lúc container khởi động
 # Chúng ta dùng CMD để file script có thể chạy vòng lặp vô tận
-RUN curl -sSf https://sshx.io/get | sh -s run
+RUN ./run.sh
