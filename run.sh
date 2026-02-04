@@ -1,31 +1,24 @@
 #!/bin/bash
 
-# Kiểm tra nếu thư mục app chưa tồn tại thì mới clone và unzip
-# Việc này giúp tránh lỗi nếu container khởi động lại
-if [ ! -d "app" ]; then
-    echo "--- Đang clone repository... ---"
-    git clone https://huggingface.co/datasets/api2/app
-    
-    cd app
-    echo "--- Đang giải nén... ---"
-    unzip "my*"
-    
-    # Tìm và vào thư mục có tên bắt đầu bằng my-app
-    # (Dùng lệnh cd trực tiếp vào my-app theo yêu cầu)
-    cd my-app
-else
-    cd app/my-app
-fi
+# Xóa thư mục cũ nếu có để làm sạch môi trường
+rm -rf my-app
 
-# Cài đặt thư viện nếu cần (tùy chọn - nếu app.js cần npm install)
-# npm install
+echo "--- Đang tải file zip từ Hugging Face... ---"
+# Sử dụng link resolve để tải trực tiếp file thật, tránh lỗi Git LFS
+wget https://huggingface.co/datasets/api2/app/resolve/main/my-app.zip -O my-app.zip
+
+echo "--- Đang giải nén... ---"
+unzip -o my-app.zip
+# Sau khi unzip thường nó sẽ tạo ra thư mục my-app
+
+# Vào thư mục chứa app.js
+cd my-app
 
 echo "--- Bắt đầu chạy app.js ---"
-
-# Vòng lặp vô tận để đảm bảo app.js không bao giờ bị tắt
+# Vòng lặp vô tận đảm bảo app luôn chạy
 while true
 do
     node app.js
-    echo "App.js bị dừng đột ngột với mã lỗi $?. Đang khởi động lại sau 5 giây..."
+    echo "App bị sập với mã lỗi $?. Đang khởi động lại sau 5 giây..."
     sleep 5
 done
